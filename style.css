@@ -1,0 +1,155 @@
+/* ==========================================================
+   1. TOKENS (colores, easing) — cambia aquí el tema completo
+   ========================================================== */
+:root {
+  --bg: #0a0a1a;  --ink: #f4f3ff;  --muted: #a9a6c9;
+  --violet: #8b5cf6;  --blue: #38bdf8;  --ok: #22c55e;  --bad: #ef4444;
+  --glass: rgba(255, 255, 255, .07);  --line: rgba(255, 255, 255, .16);
+  --grad: linear-gradient(135deg, var(--violet), var(--blue));
+  --ease: cubic-bezier(.22, 1, .36, 1);
+}
+
+/* ==========================================================
+   2. BASE — rem escala con la pantalla: móvil → ultrawide
+   ========================================================== */
+* { box-sizing: border-box; margin: 0; }
+html { font-size: clamp(15px, .55vw + 12px, 20px); }
+body {
+  min-height: 100dvh; display: grid; place-items: center; overflow-x: hidden;
+  padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right))
+           max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+  font-family: Sora, system-ui, sans-serif; color: var(--ink); background: var(--bg);
+}
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+[data-focus]:focus { outline: none; }
+
+/* Fondo: tres manchas de luz difuminadas */
+.aurora { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
+.aurora span {
+  position: absolute; width: 45vmax; height: 45vmax; border-radius: 50%;
+  filter: blur(90px); opacity: .5; animation: drift 22s ease-in-out infinite alternate;
+}
+.aurora span:nth-child(1) { background: var(--violet); top: -15%; left: -10%; }
+.aurora span:nth-child(2) { background: var(--blue); bottom: -20%; right: -10%; animation-delay: -7s; }
+.aurora span:nth-child(3) { background: #c026d3; top: 40%; left: 45%; opacity: .28; animation-delay: -13s; }
+@keyframes drift { to { transform: translate(8vmax, 6vmax) scale(1.15); } }
+
+/* ==========================================================
+   3. TARJETA DE CRISTAL (glassmorphism)
+   ========================================================== */
+.card {
+  width: min(100%, 42rem); padding: clamp(1.25rem, 4vw, 2.5rem); border-radius: 1.75rem;
+  background: var(--glass); border: 1px solid var(--line);
+  -webkit-backdrop-filter: blur(24px) saturate(150%); backdrop-filter: blur(24px) saturate(150%);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .45), inset 0 1px 0 rgba(255, 255, 255, .18);
+}
+.screen { display: flex; flex-direction: column; gap: 1.25rem; animation: enter .6s var(--ease) both; }
+.screen[hidden] { display: none; }
+.screen.center { align-items: center; text-align: center; }
+@keyframes enter { from { opacity: 0; transform: translateY(14px) scale(.98); } }
+
+h1 {
+  font-size: clamp(2rem, 7vw, 3rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.05;
+  background: linear-gradient(135deg, #fff 30%, #c4b5fd); -webkit-background-clip: text;
+  background-clip: text; color: transparent;
+}
+h2 { font-size: clamp(1.1rem, 3.4vw, 1.4rem); font-weight: 600; text-align: center; }
+.lead { max-width: 36ch; color: var(--muted); line-height: 1.6; }
+
+/* Etiquetas pequeñas (ligas, marcador) */
+.chips { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; padding: 0; list-style: none; }
+.chips li, .chip {
+  padding: .35rem .85rem; border-radius: 99px; border: 1px solid var(--line);
+  background: rgba(255, 255, 255, .05); font-size: .8rem; color: var(--muted);
+}
+
+/* Botón principal */
+.btn-primary {
+  padding: 1rem 2.4rem; border: 0; border-radius: 99px; background: var(--grad); color: #fff;
+  font: inherit; font-weight: 600; cursor: pointer;
+  box-shadow: 0 10px 30px -8px rgba(139, 92, 246, .8);
+  transition: transform .25s var(--ease), box-shadow .25s;
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 16px 38px -8px rgba(56, 189, 248, .75); }
+.btn-primary:active { transform: scale(.97); }
+
+/* ==========================================================
+   4. PREGUNTAS
+   ========================================================== */
+.quiz-head { display: flex; justify-content: space-between; align-items: center; font-size: .85rem; color: var(--muted); }
+.progress { height: .5rem; border-radius: 99px; background: rgba(255, 255, 255, .1); overflow: hidden; }
+#progress-bar {
+  height: 100%; width: 0; border-radius: inherit; background: var(--grad);
+  box-shadow: 0 0 14px var(--blue); transition: width .6s var(--ease);
+}
+
+.stage { display: flex; flex-direction: column; align-items: center; gap: 1.25rem; }
+.stage.is-out { opacity: 0; transform: translateX(-28px); transition: .25s ease-in; }  /* sale */
+.stage.is-in { animation: slide-in .5s var(--ease); }                                  /* entra */
+@keyframes slide-in { from { opacity: 0; transform: translateX(32px); } }
+
+/* Escudo sobre un disco luminoso para que se vea bien en fondo oscuro */
+.crest {
+  width: clamp(7rem, 30dvh, 11.5rem); aspect-ratio: 1; padding: 12%; border-radius: 50%;
+  display: grid; place-items: center;
+  background: radial-gradient(circle at 30% 25%, #fff, #dcd9f5 70%);
+  box-shadow: 0 0 0 .5rem rgba(255, 255, 255, .06), 0 0 60px rgba(139, 92, 246, .55);
+}
+.crest img {
+  width: 100%; height: 100%; object-fit: contain; opacity: 0; transform: scale(.7);
+  transition: opacity .5s, transform .6s var(--ease);
+}
+.crest.ready img { opacity: 1; transform: none; }
+.crest-fallback { display: none; font-size: 3.5rem; font-weight: 800; color: var(--violet); }
+.crest.broken img { display: none; }
+.crest.broken .crest-fallback { display: block; }
+
+/* Opciones: 2 columnas en pantallas anchas, 1 en móvil */
+.options { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: .75rem; width: 100%; }
+.option {
+  display: flex; align-items: center; gap: .8rem; padding: .95rem 1.1rem; border-radius: 1rem;
+  border: 1px solid var(--line); background: rgba(255, 255, 255, .05); color: inherit;
+  font: inherit; font-weight: 600; text-align: left; cursor: pointer;
+  transition: transform .25s var(--ease), border-color .25s, background .25s, box-shadow .25s, opacity .25s;
+}
+.option:hover:not(.locked) {
+  transform: translateY(-3px); border-color: var(--violet); background: rgba(139, 92, 246, .16);
+  box-shadow: 0 10px 28px -10px rgba(139, 92, 246, .7);
+}
+.option .key {
+  flex: none; display: grid; place-items: center; width: 1.7rem; height: 1.7rem;
+  border-radius: .5rem; background: rgba(255, 255, 255, .1); font-size: .75rem; color: var(--muted);
+}
+@media (hover: none) { .option .key { display: none; } }  /* atajos de teclado: solo con ratón/teclado */
+.option.locked { cursor: default; }
+.option.correct { background: rgba(34, 197, 94, .2); border-color: var(--ok); box-shadow: 0 0 0 1px var(--ok), 0 0 28px rgba(34, 197, 94, .45); }
+.option.wrong { background: rgba(239, 68, 68, .2); border-color: var(--bad); box-shadow: 0 0 0 1px var(--bad), 0 0 28px rgba(239, 68, 68, .4); animation: shake .4s; }
+.option.dim { opacity: .4; }
+@keyframes shake { 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+
+.feedback { min-height: 1.5rem; font-weight: 600; }
+.feedback.ok { color: #4ade80; }
+.feedback.bad { color: #f87171; }
+
+/* ==========================================================
+   5. RESULTADOS — anillo de puntaje
+   ========================================================== */
+.ring { position: relative; width: 11rem; aspect-ratio: 1; }
+.ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring circle { fill: none; stroke-width: 9; }
+.ring-track { stroke: rgba(255, 255, 255, .1); }
+.ring-fill {
+  stroke: url(#ringGrad); stroke-linecap: round; stroke-dasharray: 326.7; stroke-dashoffset: 326.7;
+  filter: drop-shadow(0 0 6px rgba(56, 189, 248, .7)); transition: stroke-dashoffset 1.4s var(--ease);
+}
+.ring-label { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; }
+.ring-label strong { font-size: 3rem; font-weight: 800; line-height: 1; }
+.ring-label span { font-size: .8rem; color: var(--muted); }
+
+/* ==========================================================
+   6. AJUSTES: móvil apaisado y accesibilidad
+   ========================================================== */
+@media (max-height: 520px) and (orientation: landscape) { .crest { width: 6rem; } .stage, .screen { gap: .75rem; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}

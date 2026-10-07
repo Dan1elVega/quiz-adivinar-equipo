@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0a1a">
+  <title>¿Reconoces el escudo? · Quiz de las 5 grandes ligas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Fondo animado (decorativo) -->
+  <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
+
+  <main class="card">
+
+    <!-- ===== PANTALLA 1: INICIO ===== -->
+    <section class="screen center" id="screen-start">
+      <h1 data-focus tabindex="-1">¿Reconoces el escudo?</h1>
+      <p class="lead">Adivina el nombre del equipo a partir de su escudo. Preguntas de las cinco grandes ligas de Europa.</p>
+      <ul class="chips">
+        <li>Premier League</li><li>LaLiga</li><li>Serie A</li><li>Bundesliga</li><li>Ligue 1</li>
+      </ul>
+      <button class="btn-primary" id="btn-start" type="button">Comenzar</button>
+    </section>
+
+    <!-- ===== PANTALLA 2: PREGUNTAS ===== -->
+    <section class="screen" id="screen-quiz" hidden>
+      <header class="quiz-head">
+        <span id="q-count">Pregunta 1 de 10</span>
+        <span class="chip" id="q-score">0 aciertos</span>
+      </header>
+      <div class="progress" id="progress" role="progressbar" aria-label="Progreso del quiz" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div id="progress-bar"></div>
+      </div>
+
+      <!-- "stage" contiene lo que cambia en cada pregunta (se anima al cambiar) -->
+      <div class="stage" id="stage">
+        <span class="chip" id="q-league"></span>
+        <div class="crest" id="crest">
+          <img id="q-crest" alt="Escudo del equipo a identificar" referrerpolicy="no-referrer" decoding="async">
+          <span class="crest-fallback" aria-hidden="true">?</span>
+        </div>
+        <h2>¿De qué equipo es este escudo?</h2>
+        <div class="options" id="options"></div>
+        <p class="feedback" id="feedback" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <!-- ===== PANTALLA 3: RESULTADOS ===== -->
+    <section class="screen center" id="screen-result" hidden>
+      <div class="ring">
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+          <defs>
+            <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#8b5cf6"/><stop offset="1" stop-color="#38bdf8"/>
+            </linearGradient>
+          </defs>
+          <circle class="ring-track" cx="60" cy="60" r="52"/>
+          <circle class="ring-fill" id="ring-fill" cx="60" cy="60" r="52"/>
+        </svg>
+        <p class="ring-label"><strong id="r-score">0</strong><span id="r-total">de 10</span></p>
+      </div>
+      <h2 id="r-title" data-focus tabindex="-1"></h2>
+      <p class="lead" id="r-text"></p>
+      <button class="btn-primary" id="btn-restart" type="button">Volver a jugar</button>
+    </section>
+
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
